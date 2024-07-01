@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class houselistingModel(models.Model):
+class Listing(models.Model):
     # The attribute/fields/table/colums
     title = models.CharField(max_length=255)
     price = models.IntegerField()

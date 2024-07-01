@@ -1,12 +1,8 @@
-{% for house in listings %} 
-   <ul>
-        <li>
-            {{ house }}
-        </li>
-    </ul>
+{% for listing in listings %}
+
+<a href="/housesApp/{{listing.id}}">{{ listing.title }}</a>
+
+
 {% endfor %}
-
-
-
 
 

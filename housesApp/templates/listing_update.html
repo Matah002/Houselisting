@@ -1,0 +1,8 @@
+<form method="post">
+    {% csrf_token%}    <!-- <<<< required when handling post request, it is a security token -->
+    {{ form.as_p }}
+    <!-- as_p--- meaning as paragraphs -->
+    <button type="submit">Submit</button>
+    
+    
+<form>

@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from .models import houselistingModel
+from django.shortcuts import render, redirect
+from .models import Listing
+from .forms import ListingForm
 
 # Create your views here.
 """
@@ -7,24 +8,64 @@ CRUD - Create/Retrieve, Update, Delete
 
 """
 # List all the houses
-def houselistings(request):
+def listing_list(request):
     # select * from houselistingModel/table
-    listings = houselistingModel.objects.all()
+    listings = Listing.objects.all()
     context = {
-        "listings": listings,
+        "listings": listings
     }
     
     return render(request, 'listings.html', context)
-
-#CRUD - Read/Retrieve
+# listing.objects.get(id=pk)
+#CRUD - Read/Retrieve views
 #view each house by itself
-def retreiveDetails(request, pk):
+def listing_retrieve(request, pk):
     #get the house by id
-    specific_house =houselistingModel.objects.get(id = pk)
+    listing = Listing.objects.get(id=pk)
     context = {
-        "specific": specific_house
+        "listing": listing
     }
-    return render(request, 'details.html', context)
+
+    return render(request, 'listing.html', context)
+
+# Create views
+def listing_create(request):
+    form = ListingForm()  # by default it creates an empty list
+    if request.method == "POST":
+        form = ListingForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("/")  # "/" >>> redirects to homepage
+        
+    context = {
+        "form": form
+    }
+    return render(request, "listing_create.html", context)
+
+
+# Update views
+def listing_update(request, pk):
+    listing = Listing.objects.get(id=pk)
+    form = ListingForm(instance=listing)  # by default it creates an empty list 
+    # instance = listing >>>> Django knows we are updating an existing form, we are not creating a new one
+    if request.method == "POST":
+        form = ListingForm(request.POST, instance=listing)
+        if form.is_valid():
+            form.save()
+            return redirect("/")  # "/" >>> redirects to homepage
+        
+    context = {
+        "form": form
+    }
+    return render(request, "listing_update.html", context)
+
+
+# Deleting views
+def listing_delete(request, pk):
+    listing = Listing.objects.get(id=pk)
+    listing.delete()
+    return redirect("/")
+
 
 
 
