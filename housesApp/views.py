@@ -32,7 +32,7 @@ def listing_retrieve(request, pk):
 def listing_create(request):
     form = ListingForm()  # by default it creates an empty list
     if request.method == "POST":
-        form = ListingForm(request.POST)
+        form = ListingForm(request.POST, request.FILES) # request.FILES >>> for images to work,, update also on this template
         if form.is_valid():
             form.save()
             return redirect("/")  # "/" >>> redirects to homepage
@@ -49,7 +49,7 @@ def listing_update(request, pk):
     form = ListingForm(instance=listing)  # by default it creates an empty list 
     # instance = listing >>>> Django knows we are updating an existing form, we are not creating a new one
     if request.method == "POST":
-        form = ListingForm(request.POST, instance=listing)
+        form = ListingForm(request.POST, instance=listing, files=request.FILES)
         if form.is_valid():
             form.save()
             return redirect("/")  # "/" >>> redirects to homepage
